@@ -8,12 +8,15 @@ Created on Tue Dec 17 22:11:20 2019
 
 def create_punnet_square(first_allele, scnd_allele):
     punnet_square = {}
-    for i in range(len(first_allele)):
+    for i in first_allele:
         for j in scnd_allele:
-            new_allele = first_allele[i]+j
+            new_allele = i+j
+            new_allele_rev = new_allele[::-1]
             if new_allele in punnet_square:
                 punnet_square[new_allele] += 1
-            else:
+            elif new_allele_rev in punnet_square:
+                punnet_square[new_allele_rev] += 1
+            else: 
                 punnet_square[new_allele] = 1
     return punnet_square
     
@@ -21,7 +24,11 @@ def create_punnet_square(first_allele, scnd_allele):
 def count_dominant_allele(punnet_square):
     count = 0
     for k in punnet_square:
-        if k[0].isupper():
+        upper = False
+        for letter in k:
+            if letter.isupper():
+                upper = True
+        if upper:
             count += 1 * punnet_square[k]
     return count
     
@@ -46,7 +53,6 @@ def mendelian_inheritance(no_dominant, no_heterozyguos, no_recessive):
         alelle_list.append("Xx")
     for i in range(no_recessive):
         alelle_list.append("xx")
-    print(alelle_list)
     
     total_combinations = 0
     no_dominant_allele = 0
@@ -56,9 +62,6 @@ def mendelian_inheritance(no_dominant, no_heterozyguos, no_recessive):
             total_combinations +=4
             punnet = punnet_dict[alelle_list[a]][alelle_list[b]]
             no_dominant_allele += count_dominant_allele(punnet)
-    print(no_dominant_allele)
-    print(total_combinations)
     print(no_dominant_allele/total_combinations)
 
-#print(count_dominant_allele(create_punnet_square("XX","xx")))
-mendelian_inheritance(2,2,2)
+mendelian_inheritance(25,18,27)
